@@ -88,6 +88,8 @@ data_bal=data_s.groupby('subcatid').filter(lambda x: len(x) >= 100)
 #data_bal['value_processed_lemm'] = data_bal.value_processed.apply(perform_lemm)
 """
 data_bal['value_processed'] = Parallel(n_jobs=-1, verbose=10)(delayed(clean_str)(i) for i in data_bal['value'].tolist())
+import nltk
+nltk.data.path.append("/prod/nltk_data/")
 data_bal['value_processed_lemm'] = Parallel(n_jobs=-1, verbose=10)(delayed(perform_lemm)(i) for i in data_bal['value_processed'].tolist())
 
 print(data_bal.value_processed_lemm.head(20))
