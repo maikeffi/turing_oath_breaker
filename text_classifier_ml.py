@@ -28,6 +28,7 @@ from sklearn.metrics import classification_report,accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.externals.joblib import Parallel, delayed
+import dask_ml.model_selection as dcv
 
 
 start_time = time.time()
@@ -129,7 +130,7 @@ model = Pipeline([('vectorizer', CountVectorizer(ngram_range=(1,2))),
     ('tfidf', TfidfTransformer(use_idf=True)),
     ('clf', RandomForestClassifier(max_features='auto',bootstrap=False,random_state = 42))])
 
-gs_clf_rfc = GridSearchCV(model, random_grid,cv=2,verbose=20, n_jobs=4)
+gs_clf_rfc = dcv.GridSearchCV(model, random_grid,cv=2, n_jobs=-1)
 gs_clf_rfc.fit(X_train, y_train)
 
 model = gs_clf_rfc.best_estimator_
